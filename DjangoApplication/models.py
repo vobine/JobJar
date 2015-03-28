@@ -2,13 +2,25 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Implementation parameters.
-CHAR_LIMITS = {
-    'abbr' : 4,
-    'name' : 20,
-    'desc' : 120,
-}
+# (At the moment there are none.)
 
-# Create your models here.
+# Various size-limited character fields. Consistency is useful.
+class CharAbbr (models.CharField):
+    """Abbreviated names: very short."""
+    def __init__ (self, *args, **kwargs):
+        super (CharAbbr, self).__init__ (max_length=4,
+                                         *args, **kwargs)
+class CharName (models.CharField):
+    """Full names: long enough to be unique and mnemonic."""
+    def __init__ (self, *args, **kwargs):
+        super (CharName, self).__init__ (max_length=20,
+                                         *args, **kwargs)
+class CharNote (models.CharField):
+    """Verbose text: optional descriptive prose."""
+    def __init__ (self, null=True, *args, **kwargs):
+        super (CharNote, self).__init__ (max_length=1200,
+                                         null=null,
+                                         *args, **kwargs)
 
 # We subclass User to turn it into something more flexible someday.
 class JobOwner (User):
@@ -19,22 +31,22 @@ class JobOwner (User):
 
 class JobState (models.Model):
     """The state of a Job, e.g., finished, in process, whatever."""
-    abbrev = models.CharField (max_length=CHAR_LIMITS['abbr'])
-    name = models.CharField (max_length=CHAR_LIMITS['name'])
-    desc = models.CharField (max_length=CHAR_LIMITS['desc'])
+    abbrev = CharAbbr ()
+    name = CharName ()
+    desc = CharNote ()
 
 class Job (models.Model):
     """An individual task to be scheduled. Grist for the mill."""
-    name = models.CharField (max_length=CHAR_LIMITS['name'])
-    desc = models.CharField (max_length=CHAR_LIMITS['desc'])
+    name = CharName ()
+    desc = CharNote ()
     owner = models.ForeignKey (JobOwner, null=True)
     state = models.ForeignKey (JobState)
 
 class JobEventType (models.Model):
     """A classification of events in the Log."""
-    abbrev = models.CharField (max_length=CHAR_LIMITS['abbr'])
-    name = models.CharField (max_length=CHAR_LIMITS['name'])
-    desc = models.CharField (max_length=CHAR_LIMITS['desc'])
+    abbrev = CharAbbr ()
+    name = CharName ()
+    desc = CharNote ()
 
 class JobLog (models.Model):
     """A state change for a Job."""
@@ -42,4 +54,4 @@ class JobLog (models.Model):
     owner = models.ForeignKey (JobOwner, null=True)
     event = models.ForeignKey (JobEventType)
     timestamp = models.DateTimeField (auto_now_add=True)
-    note = models.CharField (max_length=CHAR_LIMITS['desc'])
+    note = CharNote ()
