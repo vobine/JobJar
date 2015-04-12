@@ -23,6 +23,10 @@ class JobState (models.Model):
     name = models.CharField (max_length=CHAR_LIMITS['name'])
     desc = models.CharField (max_length=CHAR_LIMITS['desc'])
 
+    def __unicode__ (self):
+        """Text representation."""
+        return u'{0:5s} {1:s}'.format (self.abbrev, self.name)
+
 class Job (models.Model):
     """An individual task to be scheduled. Grist for the mill."""
     name = models.CharField (max_length=CHAR_LIMITS['name'])
@@ -30,11 +34,19 @@ class Job (models.Model):
     owner = models.ForeignKey (JobOwner, null=True)
     state = models.ForeignKey (JobState)
 
+    def __unicode__ (self):
+        """Text representation."""
+        return u'{0:s}'.format (self.name)
+
 class JobEventType (models.Model):
     """A classification of events in the Log."""
     abbrev = models.CharField (max_length=CHAR_LIMITS['abbr'])
     name = models.CharField (max_length=CHAR_LIMITS['name'])
     desc = models.CharField (max_length=CHAR_LIMITS['desc'])
+
+    def __unicode__ (self):
+        """Text representation."""
+        return u'{0:5s} {1:s}'.format (self.abbrev, self.name)
 
 class JobLog (models.Model):
     """A state change for a Job."""
