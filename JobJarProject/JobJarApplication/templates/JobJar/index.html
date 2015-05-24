@@ -1,0 +1,13 @@
+{% load staticfiles %}
+
+{% if jobs %}
+    <ul>
+    {% for job in jobs %}
+        <li>
+          {{ question.question_text }}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>There are no active jobs. Vay-cay!.</p>
+{% endif %}

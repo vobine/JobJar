@@ -1,6 +1,14 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.views import generic
 
+from JobJarApplication.models import *
 
-def index (request):
-    return HttpResponse ("Hello, world, you're at the index.")
+class IndexView (generic.ListView):
+    """Home page: list of interesting jobs."""
+    template_name = "JobJar/index.html"
+    context_object_name = "jobs"
+
+    def get_queryset (self):
+        """Return active jobs."""
+        return Job.objects.all ()
