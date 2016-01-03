@@ -11,4 +11,6 @@ class IndexView (generic.ListView):
 
     def get_queryset (self):
         """Return active jobs."""
-        return Job.objects.all ()
+        active = [JOB_STATES_ABBR[x]
+                  for x in ('new', 'busy', 'wait', 'what')]
+        return Job.objects.filter (state__in=active)
