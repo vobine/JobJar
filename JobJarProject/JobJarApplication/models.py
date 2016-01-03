@@ -24,7 +24,7 @@ JOB_STATES = dict ((jsv[0], jsv[1:])
                                 'State unknown, probably a bug' ),
                            ))
 JOB_STATES_ABBR = dict ((v[0], k)
-                        for k, v in JOB_STATES.iteritems ())
+                        for k, v in JOB_STATES.items ())
 
 # We subclass User to turn it into something more flexible someday.
 class JobOwner (User):
@@ -39,11 +39,11 @@ class Job (models.Model):
     desc = models.CharField (max_length=CHAR_LIMITS['desc'])
     owner = models.ForeignKey (JobOwner, null=True)
     state = models.IntegerField (choices=tuple (
-        (k, v[1]) for k, v in JOB_STATES.iteritems ()))
+        (k, v[1]) for k, v in JOB_STATES.items ()))
 
     def __unicode__ (self):
         """Text representation."""
-        return u'{0:s}'.format (self.name)
+        return '{0:s}'.format (self.name)
 
 class JobEventType (models.Model):
     """A classification of events in the Log."""
@@ -53,7 +53,7 @@ class JobEventType (models.Model):
 
     def __unicode__ (self):
         """Text representation."""
-        return u'{0:5s} {1:s}'.format (self.abbrev, self.name)
+        return '{0:5s} {1:s}'.format (self.abbrev, self.name)
 
 class JobLog (models.Model):
     """A state change for a Job."""
