@@ -14,7 +14,7 @@ JOB_STATES = dict ((jsv[0], jsv[1:])
                                 'Created but not yet fully fleshed out' ),
                                (2, 'busy', 'Busy',
                                 'Currently in progress' ),
-                               (3, 'avail', 'Available',
+                               (3, 'wait', 'Available',
                                 'Available for scheduling' ),
                                (4, 'idle', 'Idle',
                                 'Not complete, but not ready either' ),
@@ -23,6 +23,8 @@ JOB_STATES = dict ((jsv[0], jsv[1:])
                                (6, 'what', 'Unknown',
                                 'State unknown, probably a bug' ),
                            ))
+JOB_STATES_ABBR = dict ((v[0], k)
+                        for k, v in JOB_STATES.iteritems ())
 
 # We subclass User to turn it into something more flexible someday.
 class JobOwner (User):
